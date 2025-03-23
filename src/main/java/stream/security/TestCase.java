@@ -13,8 +13,8 @@ public class TestCase {
     Integer tcId;
     String src;
     String dst;
-    boolean expect_existence;
-
+    @JsonProperty("expect_existence")
+    boolean expectExistence;
     @JsonProperty("expected_path")
     List<String> expectedPath;
 }

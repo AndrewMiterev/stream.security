@@ -15,7 +15,7 @@ public class Node {
 
     @Override
     public String toString() {
-        String collect = accessTo.stream().map(n -> n.name).collect(Collectors.joining(","));
+        final String collect = accessTo.stream().map(n -> n.name).collect(Collectors.joining(","));
         return "Node{" + "name='" + name + '\'' + ", type='" + type + '\'' + ", accessTo=" + collect + '}';
     }
 }

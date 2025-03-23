@@ -7,103 +7,102 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 @Slf4j
 public class Main {
 
-    static List<TestCase> testCases = loadJsonList("C:\\Users\\andreym\\IdeaProjects\\security\\src\\main\\java" + "\\stream\\security\\test_cases.json",
+    private static final List<TestCase> testCases = loadJsonList(
+            "C:\\Users\\andreym\\IdeaProjects\\security\\src\\main\\java" + "\\stream\\security\\test_cases.json",
             new TypeReference<List<TestCase>>() {
             });
-    static List<MapEntry> entries = loadJsonList(
+    private static final List<MapEntry> entries = loadJsonList(
             "C:\\Users\\andreym\\IdeaProjects\\security\\src\\main" + "\\java\\stream\\security\\map_entities.json",
             new TypeReference<List<MapEntry>>() {
             });
 
-    private static List<Node> nodes = new ArrayList<>();
-    private static Map<String, Node> mapNameToNode = new HashMap<>();
+    private static final Map<String, Node> mapNameToNode = initializeMapNameToNode();
 
     @SneakyThrows
-    private static <E> List<E> loadJsonList(String pathName, TypeReference<List<E>> typeReference) {
+    private static <E> List<E> loadJsonList(final String pathName, final TypeReference<List<E>> typeReference) {
         return new ObjectMapper().readValue(new File(pathName), typeReference);
     }
 
     public static void main(String[] args) {
-        initializeNodes();
         for (TestCase test : testCases) {
-            List<String> checkedPath = new ArrayList<>();
-            List<String> path = findPath(test.src, test.dst, new ArrayList<>(), checkedPath);
-            if (!comparePath(path, test.expectedPath)) {
+            final List<String> maxCheckedPath = new ArrayList<>();
+            final List<String> path = findPath(test.src, test.dst, new ArrayList<>(), maxCheckedPath);
+            if (path.equals(test.expectedPath)) {
+                log.info("{}", test);
+                log.info("actual path {}", path);
+            } else {
                 log.error("{}", test);
                 log.error("actual path {}", path);
                 if (path.isEmpty())
-                    log.error("max checked path {}", checkedPath);
-            } else {
-                log.info("{}", test);
-                log.info("actual path {}", path);
+                    log.error("max checked path {}", maxCheckedPath);
             }
         }
     }
 
-    private static boolean comparePath(List<String> path, List<String> expectedPath) {
-        if (path == null)
-            path = new ArrayList<>();
-        if (expectedPath == null)
-            expectedPath = new ArrayList<>();
-        if (path.size() != expectedPath.size())
-            return false;
-        for (int i = 0; i < path.size(); i++) {
-            if (!path.get(i).equals(expectedPath.get(i)))
-                return false;
-        }
-        return true;
-    }
+    private static Map<String, Node> initializeMapNameToNode() {
+        // map creation
+        Map<String, Node> mapNameToNode = entries.stream()
+                .map(e -> Node.builder().name(e.id).type(e.type).build())
+                .collect(Collectors.toMap(n -> n.name, n -> n));
 
-    private static void makeAccessibleFromTo(String src, String dst) {
-        Node srcNode = mapNameToNode.get(src);
-        assert srcNode != null;
-        Node dstNode = mapNameToNode.get(dst);
-        assert dstNode != null;
-        srcNode.accessTo.add(dstNode);
-    }
+        // accessible setter
+        BiConsumer<String, String> makeAccessibleFromTo = (src, dst) -> {
+            final Node srcNode = mapNameToNode.get(src);
+            assert srcNode != null;
+            final Node dstNode = mapNameToNode.get(dst);
+            assert dstNode != null;
+            srcNode.accessTo.add(dstNode);
+        };
 
-    private static void initializeNodes() {
-        nodes = entries.stream().map(e -> Node.builder().name(e.id).type(e.type).build()).toList();
-        mapNameToNode = nodes.stream().collect(Collectors.toMap(n -> n.name, n -> n));
+        // second step initialization / access from - to
         entries.forEach(entry -> {
             if (entry.attrs.city == null)
-                entry.exits.forEach(exit -> makeAccessibleFromTo(entry.id, exit));
+                entry.exits.forEach(exit -> makeAccessibleFromTo.accept(entry.id, exit));
             else {
-                makeAccessibleFromTo(entry.id, entry.attrs.city);
-                makeAccessibleFromTo(entry.attrs.city, entry.id);
+                makeAccessibleFromTo.accept(entry.id, entry.attrs.city);
+                makeAccessibleFromTo.accept(entry.attrs.city, entry.id);
             }
         });
+        return mapNameToNode;
     }
 
-    static <E> List<E> of(E e1, List<E> eList) {
+    // because the standard library does not contain such a method
+    private static <E> List<E> of(E e1, List<E> eList) {
         List<E> result = new ArrayList<>();
         result.add(e1);
         result.addAll(eList);
         return result;
     }
 
-    public static List<String> findPath(String src, String dest, List<String> checked, List<String> maxPathChecked) {
-        if (checked.contains(src) || checked.contains(dest))
-            return new ArrayList<>(); // loop in paths or error in parameter
-        if (src.equals(dest)) // reached
+    public static List<String> findPath(String src, String dest, List<String> nodeChecked, List<String> maxPathAccumulator) {
+        if (nodeChecked.contains(src) || nodeChecked.contains(dest))
+            return new ArrayList<>(); // loop in paths or error in parameters
+        if (src.equals(dest)) // reached destination
             return List.of(dest);
-        Node srcNode = mapNameToNode.get(src);
+        final Node srcNode = mapNameToNode.get(src);
         assert srcNode != null;
-        List<String> newChecked = new ArrayList<>(checked);
+        final List<String> newChecked = new ArrayList<>(nodeChecked);
         newChecked.add(src);
-        if (newChecked.size() > maxPathChecked.size()) {
-            maxPathChecked.clear();
-            maxPathChecked.addAll(newChecked);
+        if (newChecked.size() > maxPathAccumulator.size()) {
+            // re-create
+            maxPathAccumulator.clear();
+            maxPathAccumulator.addAll(newChecked);
         }
-        Map<Node, List<String>> mapNodeToPath = srcNode.accessTo.stream()
-                .collect(Collectors.toMap(n -> n, n -> findPath(n.name, dest, newChecked, maxPathChecked)));
-        Optional<Map.Entry<Node, List<String>>> shortest = mapNodeToPath.entrySet().stream()
-                .filter(e -> !e.getValue().isEmpty()).min(Comparator.comparing(e -> e.getValue().size()));
-        return shortest.map(Map.Entry::getValue).map(l -> of(src, l)).orElse(new ArrayList<>());
+        final Map<Node, List<String>> mapNodeToPath = srcNode.accessTo.stream()
+                .collect(Collectors.toMap(n -> n, n -> findPath(n.name, dest, newChecked, maxPathAccumulator)));
+        final Optional<Map.Entry<Node, List<String>>> shortestPath = mapNodeToPath.entrySet()
+                .stream()
+                .filter(e -> !e.getValue().isEmpty())
+                .min(Comparator.comparing(e -> e.getValue().size()));
+        return shortestPath
+                .map(Map.Entry::getValue)
+                .map(l -> of(src, l))
+                .orElse(List.of());
     }
 }
