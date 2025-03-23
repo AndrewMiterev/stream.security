@@ -89,7 +89,7 @@ public class Main {
         final List<String> newChecked = new ArrayList<>(nodeChecked);
         newChecked.add(src);
         if (newChecked.size() > maxPathAccumulator.size()) {
-            // re-create
+            // re-create maximum path
             maxPathAccumulator.clear();
             maxPathAccumulator.addAll(newChecked);
         }
