@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 @ToString
+@SuppressWarnings("unused")
 public class TestCase {
     @JsonProperty("tc_id")
     Integer tcId;

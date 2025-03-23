@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 @ToString
+@SuppressWarnings("unused")
 public class MapEntry {
     String type;
     String id;
