@@ -1,0 +1,82 @@
+[
+  {
+    "tc_id": 1,
+    "src": "house-1",
+    "dst": "house-2",
+    "expect_existence": true,
+    "expected_path": [
+      "house-1",
+      "house-2"
+    ]
+  },
+  {
+    "tc_id": 2,
+    "src": "house-1",
+    "dst": "house-6",
+    "expect_existence": true,
+    "expected_path": [
+      "house-1",
+      "tel-aviv",
+      "junction-1",
+      "ramat-gan",
+      "junction-2",
+      "ariel",
+      "house-6"
+    ]
+  },
+  {
+    "tc_id": 3,
+    "src": "house-6",
+    "dst": "house-1",
+    "expect_existence": false,
+    "expected_path": [
+      "house-6",
+      "ariel",
+      "junction-2"
+    ]
+  },
+  {
+    "tc_id": 4,
+    "src": "house-8",
+    "dst": "house-6",
+    "expect_existence": true,
+    "expected_path": [
+      "house-8",
+      "jerusalem",
+      "junction-3",
+      "highway-road-1",
+      "junction-1",
+      "ramat-gan",
+      "junction-2",
+      "ariel",
+      "house-6"
+    ]
+  },
+  {
+    "tc_id": 5,
+    "src": "house-3",
+    "dst": "house-9",
+    "expect_existence": false,
+    "expected_path": [
+      "house-3",
+      "tel-aviv",
+      "junction-1",
+      "ramat-gan",
+      "junction-2",
+      "ariel"
+    ]
+  },
+  {
+    "tc_id": 6,
+    "src": "house-5",
+    "dst": "house-2",
+    "expect_existence": false,
+    "expected_path": [
+      "house-5",
+      "ramat-gan",
+      "junction-1",
+      "highway-road-1",
+      "airport-ben-gurion"
+    ]
+  }
+]

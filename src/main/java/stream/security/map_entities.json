@@ -1,0 +1,145 @@
+[
+    {
+        "type": "airport",
+        "id": "airport-ben-gurion",
+        "attrs": {},
+        "exits": [
+            "highway-road-1"
+        ]
+    },
+    {
+        "type": "city",
+        "id": "tel-aviv",
+        "attrs": {},
+        "exits": [
+            "junction-1"
+        ],
+        "rules": [
+            "only-even-numbered-can-enter"
+        ]
+    },
+    {
+        "type": "city",
+        "id": "ramat-gan",
+        "attrs": {},
+        "exits": [
+            "junction-1",
+            "junction-2"
+        ]
+    },
+    {
+        "type": "city",
+        "id": "ariel",
+        "attrs": {},
+        "exits": [
+            "junction-2"
+        ]
+    },
+    {
+        "type": "city",
+        "id": "jerusalem",
+        "attrs": {},
+        "exits": [
+            "junction-3"
+        ]
+    },
+    {
+        "type": "highway-road",
+        "id": "highway-road-1",
+        "attrs": {},
+        "exits": [
+            "junction-1",
+            "junction-3",
+            "airport-ben-gurion"
+        ]
+    },
+    {
+        "type": "house",
+        "id": "house-1",
+        "attrs": {
+            "city": "tel-aviv"
+        }
+    },
+    {
+        "type": "house",
+        "id": "house-2",
+        "attrs": {
+            "city": "tel-aviv"
+        }
+    },
+    {
+        "type": "house",
+        "id": "house-3",
+        "attrs": {
+            "city": "tel-aviv"
+        }
+    },
+    {
+        "type": "house",
+        "id": "house-4",
+        "attrs": {
+            "city": "ramat-gan"
+        }
+    },
+    {
+        "type": "house",
+        "id": "house-5",
+        "attrs": {
+            "city": "ramat-gan"
+        }
+    },
+    {
+        "type": "house",
+        "id": "house-6",
+        "attrs": {
+            "city": "ariel"
+        }
+    },
+    {
+        "type": "house",
+        "id": "house-7",
+        "attrs": {
+            "city": "ariel"
+        }
+    },
+    {
+        "type": "house",
+        "id": "house-8",
+        "attrs": {
+            "city": "jerusalem"
+        }
+    },
+    {
+        "type": "house",
+        "id": "house-9",
+        "attrs": {
+            "city": "jerusalem"
+        }
+    },
+    {
+        "type": "junction",
+        "id": "junction-1",
+        "attrs": {},
+        "exits": [
+            "tel-aviv",
+            "ramat-gan",
+            "highway-road-1"
+        ]
+    },
+    {
+        "type": "junction",
+        "id": "junction-2",
+        "attrs": {},
+        "exits": [
+            "ariel"
+        ]
+    },
+    {
+        "type": "junction",
+        "id": "junction-3",
+        "attrs": {},
+        "exits": [
+            "highway-road-1"
+        ]
+    }
+]
