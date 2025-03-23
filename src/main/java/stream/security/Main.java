@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class Main {
-
     private static final List<TestCase> testCases = loadJsonList(
             "C:\\Users\\andreym\\IdeaProjects\\security\\src\\main\\java" + "\\stream\\security\\test_cases.json",
             new TypeReference<List<TestCase>>() {
@@ -47,12 +46,12 @@ public class Main {
 
     private static Map<String, Node> initializeMapNameToNode() {
         // map creation
-        Map<String, Node> mapNameToNode = entries.stream()
+        final Map<String, Node> mapNameToNode = entries.stream()
                 .map(e -> Node.builder().name(e.id).type(e.type).build())
                 .collect(Collectors.toMap(n -> n.name, n -> n));
 
         // accessible setter
-        BiConsumer<String, String> makeAccessibleFromTo = (src, dst) -> {
+        final BiConsumer<String, String> makeAccessibleFromTo = (src, dst) -> {
             final Node srcNode = mapNameToNode.get(src);
             assert srcNode != null;
             final Node dstNode = mapNameToNode.get(dst);
@@ -73,14 +72,14 @@ public class Main {
     }
 
     // because the standard library does not contain such a method
-    private static <E> List<E> of(E e1, List<E> eList) {
+    private static <E> List<E> of(final E e1, final List<E> eList) {
         List<E> result = new ArrayList<>();
         result.add(e1);
         result.addAll(eList);
         return result;
     }
 
-    public static List<String> findPath(String src, String dest, List<String> nodeChecked, List<String> maxPathAccumulator) {
+    public static List<String> findPath(final String src, final String dest, final List<String> nodeChecked, final List<String> maxPathAccumulator) {
         if (nodeChecked.contains(src) || nodeChecked.contains(dest))
             return new ArrayList<>(); // loop in paths or error in parameters
         if (src.equals(dest)) // reached destination
