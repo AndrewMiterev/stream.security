@@ -11,15 +11,14 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 @Slf4j
+@SuppressWarnings("Convert2Diamond") // types 4 List<TestCase> and List<MapEntry>
 public class Main {
-    @SuppressWarnings("Convert2Diamond") // type 4 List<TestCase>
     private static final List<TestCase> testCases = loadJsonList(
-            "C:\\Users\\andreym\\IdeaProjects\\security\\src\\main\\java" + "\\stream\\security\\test_cases.json",
+            "C:\\Users\\andreym\\IdeaProjects\\security\\src\\main\\java\\stream\\security\\test_cases.json",
             new TypeReference<List<TestCase>>() {
             });
-    @SuppressWarnings("Convert2Diamond")
     private static final List<MapEntry> entries = loadJsonList(
-            "C:\\Users\\andreym\\IdeaProjects\\security\\src\\main" + "\\java\\stream\\security\\map_entities.json",
+            "C:\\Users\\andreym\\IdeaProjects\\security\\src\\main\\java\\stream\\security\\map_entities.json",
             new TypeReference<List<MapEntry>>() {
             });
 
