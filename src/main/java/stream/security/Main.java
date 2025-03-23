@@ -73,11 +73,11 @@ public class Main {
         return mapNameToNode;
     }
 
-    // because the standard library does not contain such a method
-    private static <E> List<E> of(final E e1, final List<E> eList) {
+    // because the standard library List.of(...) does not contain such a method
+    private static <E> List<E> of(final E element, final List<E> elementsList) {
         List<E> result = new ArrayList<>();
-        result.add(e1);
-        result.addAll(eList);
+        result.add(element);
+        result.addAll(elementsList);
         return result;
     }
 
