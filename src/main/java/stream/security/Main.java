@@ -81,10 +81,14 @@ public class Main {
     }
 
     public static List<String> findPath(final String src, final String dest, final List<String> nodeChecked, final List<String> maxPathAccumulator) {
+        // loop in paths or error in parameters
         if (nodeChecked.contains(src) || nodeChecked.contains(dest))
-            return new ArrayList<>(); // loop in paths or error in parameters
-        if (src.equals(dest)) // reached destination
+            return new ArrayList<>();
+
+        // reached destination
+        if (src.equals(dest))
             return List.of(dest);
+
         final Node srcNode = mapNameToNode.get(src);
         assert srcNode != null;
         final List<String> newChecked = new ArrayList<>(nodeChecked);
