@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
 @SuppressWarnings("Convert2Diamond") // types 4 List<TestCase> and List<MapEntry>
 public class Main {
     private static final List<TestCase> testCases = loadJsonList(
-            "C:\\Users\\andreym\\IdeaProjects\\security\\src\\main\\java\\stream\\security\\test_cases.json",
+            "src/main/java/stream/security/test_cases.json",
             new TypeReference<List<TestCase>>() {
             });
     private static final List<MapEntry> entries = loadJsonList(
-            "C:\\Users\\andreym\\IdeaProjects\\security\\src\\main\\java\\stream\\security\\map_entities.json",
+            "src/main/java/stream/security/map_entities.json",
             new TypeReference<List<MapEntry>>() {
             });
 
